@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:v1/conversation.dart';
 import 'message.dart';
 
 class MessageField extends StatelessWidget {
@@ -7,15 +6,15 @@ class MessageField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const TextField(
-      //onSubmitted: (value) => conversationState.addMessageToConversation(
-      //  const Message(
-      //    message_text: "added message",
-      //    sender: true,
-      //  ),
-      //),
+    return TextField(
+      // onSubmitted: (value) => archive.addMessageToConversation(
+      //   Message(
+      //     message_text: value,
+      //     sender: true,
+      //   ),
+      // ),
       autocorrect: false,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(
           borderSide: BorderSide(width: 5.0),
         ),
