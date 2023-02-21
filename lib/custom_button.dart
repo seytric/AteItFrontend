@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:v1/log_in.dart';
+import 'api_requests.dart';
 
 class CustomButton extends StatelessWidget {
   final String title;
@@ -19,6 +23,9 @@ class CustomButton extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => goTo));
+
+            print("dwdnd");
+            getLogIn("email@email.com", "wdkbdwkjbWWW1!");
           },
           child: Text(
             title,

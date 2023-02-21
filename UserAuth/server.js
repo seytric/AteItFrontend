@@ -12,8 +12,8 @@ const app = express();
 const api = require('./routes')
 const {isAuthenticated} = require('./middlewares');
 
-
 app.use(cors());
+
 require('./services/passport')
 
 app.use(morgan('dev'));
