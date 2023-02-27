@@ -23,9 +23,7 @@ class CustomButton extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => goTo));
-
-            print("dwdnd");
-            getLogIn("email@email.com", "wdkbdwkjbWWW1!");
+            //getLogIn("email@email.com", "wdkbdwkjbWWW1!");
           },
           child: Text(
             title,

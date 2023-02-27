@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'message.dart';
 
@@ -26,12 +27,24 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: Color.fromARGB(207, 38, 38, 38),
       body: Stack(
         children: [
+          Container(
+            width: 2000,
+            height: 60,
+            decoration: BoxDecoration(color: Color.fromARGB(54, 0, 0, 0)),
+            child: Center(
+              child: Text(
+                "AteIt",
+                style: GoogleFonts.abrilFatface(fontSize: 40, color: Colors.white),
+              ),
+            ),
+          ),
           Padding(
-            padding: EdgeInsets.only(left: 50, right: 50, top: height * 0.05),
+            padding: EdgeInsets.only(top: 65, left: 20, right: 20),
             child: SizedBox(
-              height: height * 0.7,
+              height: height * 0.72,
               child: ListView.builder(
                 controller: scrollController,
                 itemCount: messages.length,
@@ -46,30 +59,33 @@ class _MainPageState extends State<MainPage> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 200),
               child: TextField(
+                style: const TextStyle(color: Color.fromARGB(204, 255, 255, 255)),
                 controller: fieldController,
                 onSubmitted: (value) {
                   addMessageToConversation(
                     Message(
                       message_text: value,
-                      sender: value.length > 8 ? true : false,
+                      sender: messages.length % 2 == 0 ? true : false,
                     ),
                   );
                   fieldController.clear();
                 },
                 autocorrect: true,
                 decoration: const InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(width: 5.0),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color.fromARGB(255, 4, 4, 4), width: 1.5),
+                    borderRadius: BorderRadius.all(Radius.circular(7)),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black),
+                    borderSide: BorderSide(color: Color.fromARGB(152, 0, 0, 0), width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(7)),
                   ),
-                  prefixIcon: Icon(
-                    Icons.arrow_right_alt_outlined,
+                  suffixIcon: Icon(
+                    Icons.send_sharp,
                     color: Colors.black,
                   ),
                 ),
-                cursorColor: Colors.black,
+                cursorColor: const Color.fromARGB(85, 255, 255, 255),
               ),
             ),
           ),
