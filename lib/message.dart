@@ -18,7 +18,6 @@ class Message extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(top: 10),
         child: Container(
-          width: 600,
           padding: const EdgeInsets.symmetric(vertical: 10),
           decoration: const BoxDecoration(
             color: Color.fromARGB(132, 57, 201, 245),
@@ -34,7 +33,7 @@ class Message extends StatelessWidget {
                     decoration: const BoxDecoration(color: Color.fromARGB(255, 255, 255, 255), borderRadius: BorderRadius.all(Radius.circular(3))),
                     child: const Icon(
                       Icons.person,
-                      color: Color.fromARGB(165, 57, 201, 245),
+                      color: Color.fromARGB(195, 52, 190, 232),
                       size: 30,
                     ),
                   ),
@@ -73,7 +72,7 @@ class Message extends StatelessWidget {
                     decoration: const BoxDecoration(color: Color.fromARGB(255, 255, 255, 255), borderRadius: BorderRadius.all(Radius.circular(3))),
                     child: const Icon(
                       Icons.hive,
-                      color: Color.fromARGB(170, 12, 46, 197),
+                      color: Color.fromARGB(179, 12, 46, 197),
                       size: 30,
                     ),
                   ),

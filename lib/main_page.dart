@@ -20,7 +20,16 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       messages.add(message);
     });
-    scrollController.animateTo(scrollController.position.maxScrollExtent, curve: Curves.ease, duration: const Duration(milliseconds: 250));
+  }
+
+  void scrollToBottom() {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      duration: const Duration(
+        milliseconds: 100,
+      ),
+      curve: Curves.ease,
+    );
   }
 
   @override
@@ -34,15 +43,30 @@ class _MainPageState extends State<MainPage> {
             width: 2000,
             height: 60,
             decoration: BoxDecoration(color: Color.fromARGB(54, 0, 0, 0)),
-            child: Center(
-              child: Text(
-                "AteIt",
-                style: GoogleFonts.abrilFatface(fontSize: 40, color: Colors.white),
-              ),
+            child: Stack(
+              children: [
+                Center(
+                  child: Text(
+                    "AteIt",
+                    style: GoogleFonts.abrilFatface(fontSize: 40, color: Colors.white),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Icon(
+                      Icons.account_box,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 65, left: 20, right: 20),
+            padding: const EdgeInsets.only(top: 65, left: 20, right: 20),
             child: SizedBox(
               height: height * 0.72,
               child: ListView.builder(
@@ -69,6 +93,7 @@ class _MainPageState extends State<MainPage> {
                     ),
                   );
                   fieldController.clear();
+                  WidgetsBinding.instance.addPostFrameCallback((_) => scrollToBottom());
                 },
                 autocorrect: true,
                 decoration: const InputDecoration(
