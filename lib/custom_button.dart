@@ -8,7 +8,7 @@ import 'api_requests.dart';
 class CustomButton extends StatelessWidget {
   final String title;
   final Widget goTo; // add this
-  const CustomButton(this.title, this.goTo, {super.key}); // change this
+  const CustomButton(this.title, this.goTo, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,14 +17,11 @@ class CustomButton extends StatelessWidget {
       child: Material(
         elevation: 5,
         borderRadius: BorderRadius.circular(15),
-        color: Color.fromARGB(255, 0, 0, 0),
+        color: Color.fromARGB(207, 43, 43, 43),
         child: MaterialButton(
           minWidth: 250,
           padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => goTo));
-            //getLogIn("email@email.com", "wdkbdwkjbWWW1!");
-          },
+          onPressed: () {},
           child: Text(
             title,
             textAlign: TextAlign.center,

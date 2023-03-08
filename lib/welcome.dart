@@ -12,25 +12,13 @@ class Welcome extends StatelessWidget {
     return Scaffold(
         body: Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color.fromARGB(255, 37, 129, 124),
-            Color.fromARGB(
-              255,
-              8,
-              242,
-              255,
-            ),
-          ],
-        ),
+        color: Color.fromARGB(207, 38, 38, 38),
       ),
       child: Center(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 225),
+              padding: const EdgeInsets.only(top: 190),
               child: Text(
                 "AteIt",
                 style: GoogleFonts.abrilFatface(
@@ -39,13 +27,60 @@ class Welcome extends StatelessWidget {
                 ),
               ),
             ),
-            const CustomButton(
-              "Log In",
-              LogIn(),
+            const Padding(padding: EdgeInsets.only(top: 15)),
+            Padding(
+              //button
+              padding: const EdgeInsets.only(top: 20),
+              child: Material(
+                elevation: 5,
+                borderRadius: BorderRadius.circular(15),
+                color: Color.fromARGB(207, 43, 43, 43),
+                child: MaterialButton(
+                  minWidth: 250,
+                  padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LogIn()),
+                    );
+                  },
+                  child: Text(
+                    "Log In",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.alata(
+                      color: const Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 22.0,
+                    ),
+                  ),
+                ),
+              ),
             ),
-            const CustomButton(
-              "Sign Up",
-              SignUp(),
+            Padding(
+              //button
+              padding: const EdgeInsets.only(top: 20),
+              child: Material(
+                elevation: 5,
+                borderRadius: BorderRadius.circular(15),
+                color: Color.fromARGB(207, 43, 43, 43),
+                child: MaterialButton(
+                  minWidth: 250,
+                  padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SignUp()),
+                    );
+                  },
+                  child: Text(
+                    "Sign Up",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.alata(
+                      color: const Color.fromARGB(255, 255, 255, 255),
+                      fontSize: 21.0,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),

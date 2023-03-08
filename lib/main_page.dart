@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:v1/api_requests.dart';
+import 'dart:convert';
 import 'message.dart';
 
 class MainPage extends StatefulWidget {
@@ -15,11 +16,23 @@ class _MainPageState extends State<MainPage> {
   final scrollController = ScrollController();
 
   List<Message> messages = [];
+  String prompt = "";
 
   void addMessageToConversation(Message message) {
     setState(() {
       messages.add(message);
     });
+  }
+
+  void getResponse(String message) async {
+    String response = await sendMessage("email@email.com", message);
+    var json_response_object = jsonDecode(response);
+    String response_message = json_response_object['response'];
+
+    setState(() {
+      messages.add(Message(message_text: response_message, sender: false));
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => scrollToBottom());
   }
 
   void scrollToBottom() {
@@ -89,9 +102,10 @@ class _MainPageState extends State<MainPage> {
                   addMessageToConversation(
                     Message(
                       message_text: value,
-                      sender: messages.length % 2 == 0 ? true : false,
+                      sender: true,
                     ),
                   );
+                  getResponse(value);
                   fieldController.clear();
                   WidgetsBinding.instance.addPostFrameCallback((_) => scrollToBottom());
                 },
