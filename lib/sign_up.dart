@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:v1/api_requests.dart';
 import 'package:v1/main_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -34,10 +35,12 @@ class _SignUpState extends State<SignUp> {
         error_message = error;
       });
     } else {
-      print(server_response);
+      String jwt = json_response['token'];
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString("jwt", jwt);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const MainPage()),
+        MaterialPageRoute(builder: (context) => MainPage(jwt: jwt)),
       );
     }
   }

@@ -3,9 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:v1/api_requests.dart';
 import 'dart:convert';
 import 'message.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final String jwt;
+  const MainPage({super.key, required this.jwt});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -17,6 +19,12 @@ class _MainPageState extends State<MainPage> {
 
   List<Message> messages = [];
   String prompt = "";
+  String email = "";
+
+  void setEmail() async {
+    String response = await getProfile(widget.jwt);
+    email = jsonDecode(response)['user']['email'];
+  }
 
   void addMessageToConversation(Message message) {
     setState(() {
@@ -25,9 +33,10 @@ class _MainPageState extends State<MainPage> {
   }
 
   void getResponse(String message) async {
-    String response = await sendMessage("email@email.com", message);
+    print(email);
+    String response = await sendMessage(email, message);
     var json_response_object = jsonDecode(response);
-    String response_message = json_response_object['response'];
+    String response_message = json_response_object['response']['content'];
 
     setState(() {
       messages.add(Message(message_text: response_message, sender: false));
@@ -47,13 +56,16 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (email == "") {
+      setEmail();
+    }
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Color.fromARGB(207, 38, 38, 38),
       body: Stack(
         children: [
           Container(
-            width: 2000,
+            width: double.infinity,
             height: 60,
             decoration: BoxDecoration(color: Color.fromARGB(54, 0, 0, 0)),
             child: Stack(

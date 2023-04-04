@@ -36,3 +36,15 @@ Future<String> sendMessage(String email, String message) async {
 
   return response.body;
 }
+
+Future<String> getProfile(String token) async {
+  final response = await http.post(
+    Uri.parse('https://ateitbe.azurewebsites.net' '/api/v1/user/token'),
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(<String, String>{'token': token}),
+  );
+
+  return response.body;
+}

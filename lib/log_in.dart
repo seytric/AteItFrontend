@@ -4,6 +4,7 @@ import 'package:v1/api_requests.dart';
 import 'package:v1/custom_button.dart';
 import 'package:v1/main_page.dart';
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -32,10 +33,12 @@ class _LogInState extends State<LogIn> {
         error_message = error;
       });
     } else {
-      print(server_response);
+      String jwt = json_response['token'];
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setString("jwt", jwt);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const MainPage()),
+        MaterialPageRoute(builder: (context) => MainPage(jwt: jwt)),
       );
     }
   }
