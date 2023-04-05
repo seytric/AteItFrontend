@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:v1/api_requests.dart';
+import 'package:v1/welcome.dart';
 import 'dart:convert';
 import 'message.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +22,8 @@ class _MainPageState extends State<MainPage> {
   String prompt = "";
   String email = "";
 
+  bool loading = false;
+
   void setEmail() async {
     String response = await getProfile(widget.jwt);
     email = jsonDecode(response)['user']['email'];
@@ -33,10 +36,10 @@ class _MainPageState extends State<MainPage> {
   }
 
   void getResponse(String message) async {
-    print(email);
     String response = await sendMessage(email, message);
     var json_response_object = jsonDecode(response);
     String response_message = json_response_object['response']['content'];
+    loading = false;
 
     setState(() {
       messages.add(Message(message_text: response_message, sender: false));
@@ -51,6 +54,15 @@ class _MainPageState extends State<MainPage> {
         milliseconds: 100,
       ),
       curve: Curves.ease,
+    );
+  }
+
+  void logOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("jwt");
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Welcome()),
     );
   }
 
@@ -76,15 +88,18 @@ class _MainPageState extends State<MainPage> {
                     style: GoogleFonts.abrilFatface(fontSize: 40, color: Colors.white),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 20),
+                Padding(
+                  padding: EdgeInsets.only(left: 7),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Icon(
-                      Icons.account_box,
-                      size: 30,
-                      color: Colors.white,
-                    ),
+                    child: MaterialButton(
+                        minWidth: 5,
+                        child: const Icon(
+                          Icons.logout_sharp,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => logOut()),
                   ),
                 ),
               ],
@@ -103,43 +118,57 @@ class _MainPageState extends State<MainPage> {
               ),
             ),
           ),
-          Align(
-            alignment: const FractionalOffset(0.5, 0.9),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 200),
-              child: TextField(
-                style: const TextStyle(color: Color.fromARGB(204, 255, 255, 255)),
-                controller: fieldController,
-                onSubmitted: (value) {
-                  addMessageToConversation(
-                    Message(
-                      message_text: value,
-                      sender: true,
+          loading
+              ? const Align(
+                  alignment: FractionalOffset(0.5, 0.92),
+                  child: SizedBox(
+                    width: 40,
+                    height: 40,
+                    child: CircularProgressIndicator(
+                      color: Color.fromARGB(195, 52, 190, 232),
+                      backgroundColor: Color.fromARGB(133, 12, 46, 197),
+                      strokeWidth: 5.0,
                     ),
-                  );
-                  getResponse(value);
-                  fieldController.clear();
-                  WidgetsBinding.instance.addPostFrameCallback((_) => scrollToBottom());
-                },
-                autocorrect: true,
-                decoration: const InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(255, 4, 4, 4), width: 1.5),
-                    borderRadius: BorderRadius.all(Radius.circular(7)),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Color.fromARGB(152, 0, 0, 0), width: 2),
-                    borderRadius: BorderRadius.all(Radius.circular(7)),
-                  ),
-                  suffixIcon: Icon(
-                    Icons.send_sharp,
-                    color: Colors.black,
+                )
+              : Align(
+                  alignment: const FractionalOffset(0.5, 0.9),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 200),
+                    child: TextField(
+                      style: const TextStyle(color: Color.fromARGB(204, 255, 255, 255)),
+                      controller: fieldController,
+                      onSubmitted: (value) {
+                        loading = true;
+                        addMessageToConversation(
+                          Message(
+                            message_text: value,
+                            sender: true,
+                          ),
+                        );
+                        getResponse(value);
+                        fieldController.clear();
+                        WidgetsBinding.instance.addPostFrameCallback((_) => scrollToBottom());
+                      },
+                      autocorrect: true,
+                      decoration: const InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color.fromARGB(255, 4, 4, 4), width: 1.5),
+                          borderRadius: BorderRadius.all(Radius.circular(7)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Color.fromARGB(152, 0, 0, 0), width: 2),
+                          borderRadius: BorderRadius.all(Radius.circular(7)),
+                        ),
+                        suffixIcon: Icon(
+                          Icons.send_sharp,
+                          color: Colors.black,
+                        ),
+                      ),
+                      cursorColor: const Color.fromARGB(85, 255, 255, 255),
+                    ),
                   ),
                 ),
-                cursorColor: const Color.fromARGB(85, 255, 255, 255),
-              ),
-            ),
-          ),
         ],
       ),
     );
