@@ -1,5 +1,12 @@
+import 'dart:html';
+import 'dart:js';
+
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:v1/welcome.dart';
 
 Future<String> logIn(String email, String password) async {
   final response = await http.post(
@@ -44,6 +51,18 @@ Future<String> getProfile(String token) async {
       'Content-Type': 'application/json',
     },
     body: jsonEncode(<String, String>{'token': token}),
+  );
+
+  return response.body;
+}
+
+Future<String> getRecipes(String email) async {
+  final response = await http.post(
+    Uri.parse('https://ateitmessenging.azurewebsites.net' '/getRecipes'),
+    headers: <String, String>{
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(<String, String>{'email': email}),
   );
 
   return response.body;

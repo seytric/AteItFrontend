@@ -38,7 +38,11 @@ class _LogInState extends State<LogIn> {
       pref.setString("jwt", jwt);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MainPage(jwt: jwt)),
+        MaterialPageRoute(
+            builder: (context) => MainPage(
+                  jwt: jwt,
+                  conversation: [],
+                )),
       );
     }
   }

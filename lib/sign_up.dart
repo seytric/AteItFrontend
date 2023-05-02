@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:v1/api_requests.dart';
 import 'package:v1/main_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:v1/message.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -40,7 +41,11 @@ class _SignUpState extends State<SignUp> {
       pref.setString("jwt", jwt);
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MainPage(jwt: jwt)),
+        MaterialPageRoute(
+            builder: (context) => MainPage(jwt: jwt, conversation: [
+                  Message(
+                      message_text: "Welcome to AteIt, your personal nutritionist! Ask me to create a recipe or give you nutritional advice.", sender: false)
+                ])),
       );
     }
   }

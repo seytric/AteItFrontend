@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:v1/api_requests.dart';
+import 'package:v1/recipe_book.dart';
 import 'package:v1/welcome.dart';
 import 'dart:convert';
 import 'message.dart';
@@ -8,7 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class MainPage extends StatefulWidget {
   final String jwt;
-  const MainPage({super.key, required this.jwt});
+  final List<Message> conversation;
+  const MainPage({super.key, required this.jwt, required this.conversation});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -36,9 +38,13 @@ class _MainPageState extends State<MainPage> {
   }
 
   void getResponse(String message) async {
+    print(email);
     String response = await sendMessage(email, message);
+    print(response);
     var json_response_object = jsonDecode(response);
-    String response_message = json_response_object['response']['content'];
+    String response_message = json_response_object.containsKey("response")
+        ? json_response_object['response']['content']
+        : "Error - our servers are temporarily down. Try again shortly";
     loading = false;
 
     setState(() {
@@ -64,6 +70,24 @@ class _MainPageState extends State<MainPage> {
       context,
       MaterialPageRoute(builder: (context) => Welcome()),
     );
+  }
+
+  void goToRecipes() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => RecipeBook(
+                jwt: widget.jwt,
+                email: email,
+                conversation: messages,
+              )),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    messages.addAll(widget.conversation);
   }
 
   @override
@@ -100,6 +124,20 @@ class _MainPageState extends State<MainPage> {
                           color: Colors.white,
                         ),
                         onPressed: () => logOut()),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 7),
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: MaterialButton(
+                        minWidth: 5,
+                        child: const Icon(
+                          Icons.menu_book_sharp,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                        onPressed: () => goToRecipes()),
                   ),
                 ),
               ],
